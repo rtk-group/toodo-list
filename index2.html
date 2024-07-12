@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+</head>
+<body>
+
+    <div class="container">
+        <div class="input-group mb-3 mt-5">
+            <input id="btninput" type="text" class="form-control" placeholder="Add Some Story"
+                aria-label="Recipient's username" aria-describedby="button-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-dark color-white" type="button" id="button-addon2">Add</button>
+            </div>
+        </div>
+
+        <ul id="parentlist" class="list-group">
+            <li class="list-group-item d-flex justify-content-between">
+                <h3 class="flex-grow-1">RTK group</h3>
+                <button id="edit" class="btn btn-primary mr-2" onclick="editchap(this)">Edit</button>
+                <button id="remove" class="btn btn-danger" onclick="removechap(this)">Remove</button>
+            </li>
+        </ul>
+    </div>
+
+    <script src="jquery.min.js"></script>
+
+    <script>
+
+        $('#button-addon2').click(function () {
+            let inputval = $('#btninput').val();
+            if (inputval != "") {
+                $('#btninput').val("");
+                let newLi = document.createElement('li');
+                newLi.className = "list-group-item d-flex justify-content-between";
+                newLi.innerHTML = `<h3 class="flex-grow-1">${inputval}</h3>
+            <button class="btn btn-primary mr-2" onclick="editchap(this)">Edit</button>
+            <button class="btn btn-danger" onclick="removechap(this)">Remove</button>`;
+                $('#parentlist').append(newLi)
+            }
+        });
+
+        function removechap(currentElemrnt) {
+            let hello = currentElemrnt.parentElement.remove();
+            let newmsg = document.createElement('h3');
+            newmsg.className = "list-group-item d-flex justify-content-center"
+            newmsg.innerText = "nothing is hare";
+            $('#parentlist').append(newmsg);
+        };
+
+        function editchap(currentElemrnt) {
+            if (currentElemrnt.textContent == "Done") {
+                let currenthead = currentElemrnt.previousElementSibling.value;
+                currentElemrnt.innerText = "Edit";
+                let newheading = document.createElement('h3');
+                newheading.className = "flex-grow-1"
+                newheading.textContent = currenthead;
+                currentElemrnt.parentElement.replaceChild(newheading, currentElemrnt.previousElementSibling);
+
+            } else {
+                let currentheading = currentElemrnt.previousElementSibling.textContent;
+                let newinpt = document.createElement('input');
+                newinpt.placeholder = "Add your story";
+                newinpt.type = "text"
+                newinpt.className = "form-control"
+                newinpt.value = currentheading;
+                currentElemrnt.parentElement.replaceChild(newinpt, currentElemrnt.previousElementSibling);
+                currentElemrnt.innerText = "Done";
+            }
+        }
+        $(document).on('keypress', function (e) {
+            if (e.key === "Enter") {
+                $('#button-addon2').click();
+            }
+        })
+
+    </script>
+</body>
+</html>
